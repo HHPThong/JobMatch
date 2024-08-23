@@ -8,7 +8,7 @@ namespace FPTJobMatch.Repository
     {
         private readonly ApplicationDBContext _dbContext;
         public ApplicationJobRepository(ApplicationDBContext dbContext) : base(dbContext){ _dbContext = dbContext; }
-        public void Update(ApplicationJob application) { _dbContext.apps.Update(application); }
+        public void Update(ApplicationJob applicationJob) { _dbContext.apps.Update(applicationJob); }
 
     }
 }

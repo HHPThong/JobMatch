@@ -4,6 +4,6 @@ namespace FPTJobMatch.Repository.IRepository
 {
     public interface IApplicationJobRepository:IRepository<ApplicationJob>
     {
-        public void Update(ApplicationJob application);
+        public void Update(ApplicationJob applicationJob);
     }
 }
