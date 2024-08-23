@@ -1,7 +1,6 @@
 ﻿using FPTJobMatch.Data;
 using FPTJobMatch.Models;
 using FPTJobMatch.Repository.IRepository;
-using Microsoft.EntityFrameworkCore;
 
 namespace FPTJobMatch.Repository
 {
