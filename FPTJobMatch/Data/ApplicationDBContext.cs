@@ -8,6 +8,7 @@ namespace FPTJobMatch.Data
     {
         public DbSet<Job> jobs { get; set; }
         public DbSet<ApplicationJob> apps { get; set; }
+        public DbSet<Status> status { get; set; }
         public ApplicationDBContext(DbContextOptions options) : base(options) { }
 
     }

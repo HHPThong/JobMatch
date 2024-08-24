@@ -15,6 +15,9 @@ namespace FPTJobMatch.Models
         [ValidateNever]
         public Job Jobs { get; set; }
         public string? CV {  get; set; }
-
+        public int StatusID { get; set; }
+        [ForeignKey(nameof(StatusID))]
+        [ValidateNever]
+        public Status Status { get; set; }
     }
 }
