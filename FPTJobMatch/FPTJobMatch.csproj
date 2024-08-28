@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Administrator\Controllers\" />
-    <Folder Include="Areas\Administrator\Views\" />
-    <Folder Include="Areas\Employer\Controllers\" />
-    <Folder Include="Areas\Employer\Views\" />
-    <Folder Include="Areas\JobSeeker\Controllers\" />
-    <Folder Include="Areas\JobSeeker\Views\" />
     <Folder Include="wwwroot\img\books\" />
   </ItemGroup>
 

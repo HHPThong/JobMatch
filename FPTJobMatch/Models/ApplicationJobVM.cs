@@ -8,5 +8,6 @@ namespace FPTJobMatch.Models
         public ApplicationJob applicationjob { get; set; }
         [ValidateNever]
         public IEnumerable<SelectListItem> Job {  get; set; }
+        public IEnumerable<SelectListItem> Status { get; set; }
     }
 }
