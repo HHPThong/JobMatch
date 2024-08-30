@@ -2,8 +2,9 @@ using FPTJobMatch.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace FPTJobMatch.Controllers
+namespace FPTJobMatch.Area.Employer.Controllers
 {
+    [Area("Employer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

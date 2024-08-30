@@ -5,7 +5,7 @@ namespace FPTJobMatch.Models
 {
 	public class JobMV
 	{
-		public Job job { get; set; }
+		public Job Job { get; set; }
 		[ValidateNever]
 		public IEnumerable<SelectListItem> TimeWork { get; set; }
 	}
