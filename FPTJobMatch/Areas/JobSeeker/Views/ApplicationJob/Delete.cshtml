@@ -1,5 +1,15 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model ApplicationJob
+<p>Delete Application Job</p>
+<form method="post">
+	<div class="border p-3 mt-4">
+		<input asp-for="Id" hidden />
+		<div class="mb-3 row">
+			<label asp-for="Jobs"></label>
+			<input asp-for="JobID" disabled />
+		</div>
+		<div class="mb-3 row">
+			<label asp-for="Description"></label>
+			<input asp-for="Description" />
+		</div>
+	</div>
+</form>

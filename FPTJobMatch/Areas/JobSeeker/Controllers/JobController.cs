@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace FPTJobMatch.Areas.Administrator.Controllers
+namespace FPTJobMatch.Areas.JobSeeker.Controllers
 {
 	public class JobController : Controller
 	{

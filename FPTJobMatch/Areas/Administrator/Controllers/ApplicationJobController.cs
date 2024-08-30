@@ -7,7 +7,7 @@ using FPTJobMatch.Repository.IRepository;
 using FPTJobMatch.Repository;
 using AspNetCore;
 
-namespace FPTJobMatch.Controllers
+namespace FPTJobMatch.Area.Administrator.Controllers
 {
 	[Area("Administrator")]
 	[Authorize(Roles = "Administrator")]
@@ -21,7 +21,7 @@ namespace FPTJobMatch.Controllers
 		private ApplicationJobController(IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
 		{
 			_jobRepostitory = jobRepostitory;
-			_applicationJobRepository = applicationJobRepository;
+            _applicationJobRepository = applicationJobRepository;
 			_statusRepository = statusRepository;
 			_workRepository = workRepository;
 		}
