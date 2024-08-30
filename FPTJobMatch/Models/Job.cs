@@ -12,6 +12,7 @@ namespace FPTJobMatch.Models
         public int TimeWorkID { get; set; }
         [ForeignKey(nameof(TimeWorkID))]
         [ValidateNever]
+        public TimeWork TimeWork { get; set; }
         public string Company { get; set; }
         public double Salary { get; set; }
         public string Description { get; set; }

@@ -7,8 +7,7 @@ using FPTJobMatch.Repository.IRepository;
 using FPTJobMatch.Repository;
 using AspNetCore;
 
-
-namespace FPTJobMatch.Areas.Administrator.Controllers
+namespace FPTJobMatch.Controllers
 {
 	[Area("Administrator")]
 	[Authorize(Roles = "Administrator")]
@@ -29,22 +28,30 @@ namespace FPTJobMatch.Areas.Administrator.Controllers
 
 		public IActionResult Index()
 		{
-			List<ApplicationJob> myList = _applicationJobRepository.GetAll("ApplicationJob").ToList();
+			List<ApplicationJob> myList = _applicationJobRepository.GetAll("applicationJob").ToList();
 			return View(myList);
 		}
-		public IActionResult Create()
+		public IActionResult Delete(int? ApplicationJobId)
 		{
-			ApplicationJobVM applicationJobVM = new ApplicationJobVM();
+			if (ApplicationJobId == null || ApplicationJobId == 0)
 			{
-				jobs = _jobRepostitory.GetAll().Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-				{
-					Text = j.Name,
-					Value = j.ID.ToString()
-				}),
-				Job = new Job()
-			};
-			return View(applicationJobVM);
+				return NotFound();
 			}
+			ApplicationJob? applicationJob = _applicationJobRepository.Get(j => j.Id == ApplicationJobId);
+			if (applicationJob == null)
+			{
+				return NotFound();
+			}
+			return View(applicationJob);
+		}
+		[HttpPost]
+		public IActionResult Delete(ApplicationJob? applicationJob)
+		{
+			_applicationJobRepository.Delete(applicationJob);
+			_applicationJobRepository.Save();
+			TempData["Success"] = "CV Deleted Successfully";
+			return RedirectToAction("Index");
 		}
 	}
 }
+

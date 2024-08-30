@@ -1,8 +1,10 @@
 ﻿@model ApplicationJobVM
 
-<p> Add CV </p>
-<form method= "post" enctype="multipart/form-data">
+<p> Edit CV </p>
+<form method="post" enctype="multipart/form-data">
 	<div class="border p-3 mt-4">
+		<input asp-for="applicationjob.Id" hidden />
+		<input asp-for="applicationjob.CV" hidden />
 		<div class="border p-3 mt-4">
 			<label asp-for="applicationjob.Jobs"></label>
 			<select asp-for="applicationjob.JobID" asp-items="@Model.Job"></select>
@@ -14,9 +16,14 @@
 		</div>
 		<div class="border p-3 mt-4">
 			<label asp-for="applicationjob.CV"></label>
-			<input type="file" name="file" class="form-control"/>
+			<input type="file" name="file" class="form-control" />
+		</div>
+		<div class="mb-3 row">
+			<label asp-for="applicationjob.CV"></label>
+			<input type="file" name="file" class="form-control" />
 		</div>
 		<button type="submit" class="btn btn-primary">Add</button>
 		<a asp-controller="ApplicationJob" asp-action="Index" class="btn btn-primary">Back</a>
+		<img src="@Model.applicationjob.CV" sizes="100%" />
 	</div>
 </form>

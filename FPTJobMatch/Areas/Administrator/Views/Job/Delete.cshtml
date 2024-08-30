@@ -1,5 +1,33 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Job
+<p>CREATE NEW JOB</p>
+<form method="post" enctype="multipart/form-data">
+	<div class="border p-3 mt-4">
+		<input asp-for="ID" hidden />
+		<div class="mb-3 row">
+			<label asp-for="Name"></label>
+			<input asp-for="Name" />
+		</div>
+		<div class="mb-3 row">
+			<label asp-for="TimeWork"></label>
+			<input asp-for="TimeWork" disabled />
+		</div>
+		<div class="mb-3 row">
+			<label asp-for="Company"></label>
+			<input asp-for="Company" />
+		</div>
+		<div class="mb-3 row">
+			<label asp-for="Salary"></label>
+			<input asp-for="Salary" />
+		</div>
+		<div class="mb-3 row">
+			<label asp-for="Description"></label>
+			<input asp-for="Description" />
+		</div>
+		<div class="mb-3 row">
+			<label asp-for="Request"></label>
+			<input asp-for="Request" />
+		</div>
+		<button type="submit" class="btn btn-primary">Create</button>
+		<a asp-controller="Administrator" asp-action="Index" class="btn btn-primary">Back</a>
+	</div>
+</form>

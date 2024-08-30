@@ -2,10 +2,10 @@
 <p>CREATE NEW JOB</p>
 <form method="post" enctype="multipart/form-data">
 	<div class="border p-3 mt-4">
+		<input asp-for="job.ID" hidden />
 		<div class="mb-3 row">
 			<label asp-for="job.Name"></label>
 			<input asp-for="job.Name" />
-			<span asp-validation-for="job.Name" class="text-danger"></span>
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="job.TimeWork"></label>
@@ -14,22 +14,18 @@
 		<div class="mb-3 row">
 			<label asp-for="job.Company"></label>
 			<input asp-for="job.Company" />
-			<span asp-validation-for="job.Company" class="text-danger"></span>
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="job.Salary"></label>
 			<input asp-for="job.Salary" />
-			<span asp-validation-for="job.Salary" class="text-danger"></span>
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="job.Description"></label>
 			<input asp-for="job.Description" />
-			<span asp-validation-for="job.Description" class="text-danger"></span>
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="job.Request"></label>
 			<input asp-for="job.Request" />
-			<span asp-validation-for="job.Request" class="text-danger"></span>
 		</div>
 		<button type="submit" class="btn btn-primary">Create</button>
 		<a asp-controller="Administrator" asp-action="Index" class="btn btn-primary">Back</a>

@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model List<Job>
+<partial name="_Notification" />
+<p> Lisu Of Jobs</p>
+<a asp-controller="Job" asp-action="Create" class="btn btn-primary"> Add new Job</a>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+			<td>
+				Name Job
+			</td>
+			<td>
+				Time Working
+			</td>
+			<td>
+				Company
+			</td>
+			<td>
+				Salary
+			</td>
+			<td>
+				Description
+			</td>
+			<td>
+				Request
+			</td>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var jobs in Model)
+		{
+			<tr>
+				<td>@jobs.Name</td>
+				<td>@jobs.TimeWork.Type</td>
+				<td>@jobs.Company</td>
+				<td>@jobs.Salary</td>
+				<td>@jobs.Description</td>
+				<td>@jobs.Request</td>
+			</tr>
+		}
+	</tbody>
+</table>
