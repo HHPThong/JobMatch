@@ -11,12 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("MyConnection")));
-builder.Services.ConfigureApplicationCookie(option =>
-{
-	option.LoginPath = $"/Identity/Account/Login";
-	option.LogoutPath = $"/Identity/Account/Logout";
-	option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
-});
+
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDBContext>().AddDefaultTokenProviders();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IApplicationJobRepository, ApplicationJobRepository>();
@@ -24,6 +19,12 @@ builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<ITimeWorkRepository, TimeWordRepository>();
 builder.Services.AddScoped<IEmailSender, EmailSendercs>();
+builder.Services.ConfigureApplicationCookie(option =>
+{
+    option.LoginPath = $"/Identity/Account/Login";
+    option.LogoutPath = $"/Identity/Account/Logout";
+    option.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
