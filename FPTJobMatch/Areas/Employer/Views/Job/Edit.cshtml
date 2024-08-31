@@ -1,31 +1,31 @@
 ﻿@model JobMV
-<p>CREATE NEW JOB</p>
+<p>UPDATE NEW JOB</p>
 <form method="post" enctype="multipart/form-data">
 	<div class="border p-3 mt-4">
-		<input asp-for="job.ID" hidden />
+		<input asp-for="Job.ID" hidden />
 		<div class="mb-3 row">
-			<label asp-for="job.Name"></label>
-			<input asp-for="job.Name" />
+			<label asp-for="Job.Name"></label>
+			<input asp-for="Job.Name" />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="job.TimeWork"></label>
-			<select asp-for="job.TimeWork" asp-items="@Model.TimeWork"></select>
+			<label asp-for="Job.TimeWork"></label>
+			<select asp-for="Job.TimeWork" asp-items="@Model.TimeWork"></select>
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="job.Company"></label>
-			<input asp-for="job.Company" />
+			<label asp-for="Job.Company"></label>
+			<input asp-for="Job.Company" />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="job.Salary"></label>
-			<input asp-for="job.Salary" />
+			<label asp-for="Job.Salary"></label>
+			<input asp-for="Job.Salary" />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="job.Description"></label>
-			<input asp-for="job.Description" />
+			<label asp-for="Job.Description"></label>
+			<input asp-for="Job.Description" />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="job.Request"></label>
-			<input asp-for="job.Request" />
+			<label asp-for="Job.Request"></label>
+			<input asp-for="Job.Request" />
 		</div>
 		<button type="submit" class="btn btn-primary">Create</button>
 		<a asp-controller="Administrator" asp-action="Index" class="btn btn-primary">Back</a>

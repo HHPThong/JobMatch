@@ -5,7 +5,6 @@ using FPTJobMatch.Data;
 using FPTJobMatch.Models;
 using FPTJobMatch.Repository.IRepository;
 using FPTJobMatch.Repository;
-using AspNetCore;
 
 namespace FPTJobMatch.Area.Administrator.Controllers
 {
