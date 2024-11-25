@@ -13,7 +13,7 @@ namespace FPTJobMatch.Areas.Employer.Controllers
         private readonly ITimeWorkRepository _workRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        private JobController(IJobRepository jobRepository, ITimeWorkRepository workRepository, IWebHostEnvironment webHostEnvironment)
+        public JobController(IJobRepository jobRepository, ITimeWorkRepository workRepository, IWebHostEnvironment webHostEnvironment)
         {
             _jobRepository = jobRepository;
             _workRepository = workRepository;
@@ -25,8 +25,7 @@ namespace FPTJobMatch.Areas.Employer.Controllers
             List<Job> myList = _jobRepository.GetAll().ToList();
             return View(myList);
         }
-        [Authorize(Roles = "Employer")]
-        
+        [Authorize(Roles = "Employer")]        
         public IActionResult Create()
         {
             return View();

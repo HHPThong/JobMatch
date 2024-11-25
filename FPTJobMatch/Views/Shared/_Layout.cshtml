@@ -20,23 +20,18 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                    <ul class="navbar-nav flex-grow-1">                    
+                        
                         @if (User.IsInRole("Adminitrator"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="Adminitrastor" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Adminitrastor" asp-controller="Job" asp-action="Job">Job</a>
+                                <a class="nav-link text-dark" asp-area="Adminitrastor" asp-controller="Job" asp-action="Index">Job</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Adminitrastor" asp-controller="ApplicationJob" asp-action="CV">Home</a>
+                                <a class="nav-link text-dark" asp-area="Adminitrastor" asp-controller="ApplicationJob" asp-action="Index">CV</a>
                             </li>
                         }
                         @if (User.IsInRole("Employer"))
@@ -45,23 +40,24 @@
                                 <a class="nav-link text-dark" asp-area="Employer" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Employer" asp-controller="Job" asp-action="Job">Job</a>
+                                <a class="nav-link text-dark" asp-area="Employer" asp-controller="Job" asp-action="Index">Job</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Employer" asp-controller="ApplicationJob" asp-action="CV">Home</a>
+                                <a class="nav-link text-dark" asp-area="Employer" asp-controller="ApplicationJob" asp-action="Index">CV</a>
                             </li>
                         }
                         @if (User.IsInRole("JobSeeker"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            
+                            </li>                           
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="ApplicationJob" asp-action="CV">Home</a>
+                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="ApplicationJob" asp-action="Index">CV</a>
                             </li>
                         }
-                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
                     </ul>
                 </div>
             </div>

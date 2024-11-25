@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net; 
+using FPTJobMatch.Data;
 using FPTJobMatch.Models;
+using FPTJobMatch.Repository;
 using FPTJobMatch.Repository.IRepository;
 
 namespace FPTJobMatch.Area.Employer.Controllers
@@ -9,23 +12,26 @@ namespace FPTJobMatch.Area.Employer.Controllers
     [Authorize(Roles = "Employer")]
     public class ApplicationJobController : Controller
 	{
-        private readonly IJobRepository _jobRepostitory;
+		private readonly ITimeWorkRepository _workRepository;
+		private readonly IWebHostEnvironment _webHostEnvironment;
+		private readonly IJobRepository _jobRepostitory;
         private readonly IApplicationJobRepository _applicationJobRepository;
         private readonly IStatusRepository _statusRepository;
-        private readonly ITimeWorkRepository _workRepository;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        private ApplicationJobController(IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
+        
+        public ApplicationJobController(IWebHostEnvironment webHostEnvironment , IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
         {
             _jobRepostitory = jobRepostitory;
             _applicationJobRepository = applicationJobRepository;
             _statusRepository = statusRepository;
             _workRepository = workRepository;
+            _webHostEnvironment = webHostEnvironment;
+
         }
 
 
         public IActionResult Index()
         {
-            List<ApplicationJob> myList = _applicationJobRepository.GetAll("applicationJob").ToList();
+            List<ApplicationJob> myList = _applicationJobRepository.GetAll("Job").ToList();
             return View(myList);
         }
 
@@ -43,7 +49,7 @@ namespace FPTJobMatch.Area.Employer.Controllers
 					Text = s.Name,
 					Value = s.ID.ToString()
 				}),
-				applicationjob = new ApplicationJob()
+				applicationJob = new ApplicationJob()
             };
             return View(applicationJobVM);
         }
@@ -82,7 +88,7 @@ namespace FPTJobMatch.Area.Employer.Controllers
 					 Text = s.Name,
 					 Value = s.ID.ToString()
 				 }),
-				applicationjob = new ApplicationJob()
+				applicationJob = new ApplicationJob()
 			};
 
             return View(applicationJobVM);
@@ -102,14 +108,14 @@ namespace FPTJobMatch.Area.Employer.Controllers
 					Text = s.Name,
 					Value = s.ID.ToString()
 				}),
-				applicationjob = new ApplicationJob()
+				applicationJob = new ApplicationJob()
             };
             if (ApplicationJobID == null || ApplicationJobID == 0)
             {
                 return NotFound();
             }
-            applicationJobVM.applicationjob = _applicationJobRepository.Get(j => j.Id == ApplicationJobID);
-            if (applicationJobVM.applicationjob == null)
+            applicationJobVM.applicationJob = _applicationJobRepository.Get(j => j.Id == ApplicationJobID);
+            if (applicationJobVM.applicationJob == null)
             {
                 return NotFound();
             }
@@ -158,7 +164,7 @@ namespace FPTJobMatch.Area.Employer.Controllers
 					Text = s.Name,
 					Value = s.ID.ToString()
 				}),
-				applicationjob = _applicationJobRepository.Get(j => j.Id == applicationJob.Id)
+				applicationJob = _applicationJobRepository.Get(j => j.Id == applicationJob.Id)
             };
             return View(applicationJobVM);  
         }

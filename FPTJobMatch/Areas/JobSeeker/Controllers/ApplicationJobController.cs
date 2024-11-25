@@ -14,7 +14,7 @@ namespace FPTJobMatch.Areas.JobSeeker.Controllers
         private readonly IStatusRepository _statusRepository;
         private readonly ITimeWorkRepository _workRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private ApplicationJobController(IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
+        public ApplicationJobController(IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
         {
             _jobRepostitory = jobRepostitory;
             _applicationJobRepository = applicationJobRepository;
@@ -38,7 +38,7 @@ namespace FPTJobMatch.Areas.JobSeeker.Controllers
                     Text = j.Name,
                     Value = j.ID.ToString()
                 }),
-                applicationjob = new ApplicationJob()
+				applicationJob = new ApplicationJob()
             };
             return View(applicationJobVM);
         }
@@ -71,7 +71,7 @@ namespace FPTJobMatch.Areas.JobSeeker.Controllers
                     Text = j.Name,
                     Value = j.ID.ToString()
                 }),
-                applicationjob = new ApplicationJob()
+				applicationJob = new ApplicationJob()
             };
             return View(applicationJobVM);
         }
@@ -85,14 +85,14 @@ namespace FPTJobMatch.Areas.JobSeeker.Controllers
                     Text = j.Name,
                     Value = j.ID.ToString()
                 }),
-                applicationjob = new ApplicationJob()
+				applicationJob = new ApplicationJob()
             };
             if (ApplicationJobID == null || ApplicationJobID == 0)
             {
                 return NotFound();
             }
-            applicationJobVM.applicationjob = _applicationJobRepository.Get(j => j.Id == ApplicationJobID);
-            if (applicationJobVM.applicationjob == null)
+            applicationJobVM.applicationJob = _applicationJobRepository.Get(j => j.Id == ApplicationJobID);
+            if (applicationJobVM.applicationJob == null)
             {
                 return NotFound();
             }
@@ -136,7 +136,7 @@ namespace FPTJobMatch.Areas.JobSeeker.Controllers
                     Text = j.Name,
                     Value = j.ID.ToString()
                 }),
-                applicationjob = _applicationJobRepository.Get(j => j.Id == applicationJob.Id)
+				applicationJob = _applicationJobRepository.Get(j => j.Id == applicationJob.Id)
             };
             return View(applicationJobVM);
         }

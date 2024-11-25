@@ -27,6 +27,10 @@
 				<td>@applicationJob.Description</td>
 				<td>@applicationJob.CV</td>
 				<td>@applicationJob.Status.NameStatus</td>
+				<td>
+					<a asp-controller="ApplicationJob" asp-action="Edit" asp-route-applicationjobId="@applicationJob.Id" class="btn btn-primary">Edit</a>
+					<a asp-controller="ApplicationJob" asp-action="Delete" asp-route-applicationjobId="@applicationJob.Id" class="btn btn-danger">Delete</a>
+				</td>
 			</tr>
 		}
 	</tbody>

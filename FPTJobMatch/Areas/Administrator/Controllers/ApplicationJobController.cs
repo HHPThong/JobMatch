@@ -17,7 +17,7 @@ namespace FPTJobMatch.Area.Administrator.Controllers
 		private readonly IStatusRepository _statusRepository;
 		private readonly ITimeWorkRepository _workRepository;
 		private readonly IWebHostEnvironment _webHostEnvironment;
-		private ApplicationJobController(IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
+		public ApplicationJobController(IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
 		{
 			_jobRepostitory = jobRepostitory;
             _applicationJobRepository = applicationJobRepository;

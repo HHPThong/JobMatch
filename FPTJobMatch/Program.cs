@@ -19,6 +19,7 @@ builder.Services.AddScoped<IJobRepository, JobRepository>();
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<ITimeWorkRepository, TimeWordRepository>();
 builder.Services.AddScoped<IEmailSender, EmailSendercs>();
+
 builder.Services.ConfigureApplicationCookie(option =>
 {
     option.LoginPath = $"/Identity/Account/Login";
@@ -43,7 +44,9 @@ app.MapRazorPages();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{area=JobSeeker}/{controller=ApplicationJob}/{action=Index}/{id?}");
+	name: "areas",
+	pattern: "{area=Employer}/{controller=Home}/{action=Index}/{id?}"
+	);
+
 
 app.Run();
