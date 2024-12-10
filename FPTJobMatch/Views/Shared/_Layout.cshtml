@@ -21,7 +21,9 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">                    
-                        
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Privacy" asp-action="Privacy">Privacy</a>
+                        </li>
                         @if (User.IsInRole("Adminitrator"))
                         {
                             <li class="nav-item">
@@ -55,13 +57,7 @@
                                 <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="ApplicationJob" asp-action="Index">CV</a>
                             </li>
                         }
-                        <li class="nav-item">
-<<<<<<< HEAD
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-=======
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Privacy" asp-action="Privacy">Privacy</a>
->>>>>>> d0f723ce830c4e5422a3ab258914875160c3f62b
-                        </li>
+                        
                     </ul>
                 </div>
             </div>

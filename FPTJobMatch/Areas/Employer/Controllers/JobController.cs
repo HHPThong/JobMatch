@@ -1,4 +1,4 @@
-﻿using FPTJobMatch.Models;
+﻿  using FPTJobMatch.Models;
 using FPTJobMatch.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,13 +22,22 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 
         public IActionResult Index()
         {
-            List<Job> myList = _jobRepository.GetAll().ToList();
+            List<Job> myList = _jobRepository.GetAll("TimeWork").ToList();
             return View(myList);
         }
-        [Authorize(Roles = "Employer")]        
+
         public IActionResult Create()
         {
-            return View();
+            JobMV jobMV = new JobMV()
+            {
+                TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                {
+                    Text = t.Type,
+                    Value = t.ID.ToString()
+                }),
+                Job = new Job()
+            };
+            return View(jobMV);
         }
         [HttpPost]
         public IActionResult Create(Job job)

@@ -26,8 +26,8 @@ namespace FPTJobMatch.Data
                 new TimeWork { ID = 2 ,Type = "Part Time"}
                 );
             modelBuilder.Entity<Job>().HasData(
-                new Job { ID = 1, Name = "Software Engineer", Company = "FPT Company", Salary = 40000, TimeWorkID = 1, Description = "introduction", Request = "introduction" }, 
-                new Job { ID = 2, Name = "Data Scientist"   , Company = "FPT Company", Salary = 50000, TimeWorkID = 2, Description = "introduction", Request = "introduction" }
+                new Job { ID = 1, Name = "Software Engineer", Company = "FPT Company", TimeWorkID = 1, Salary = 40000,  Description = "introduction", Request = "introduction" }, 
+                new Job { ID = 2, Name = "Data Scientist"   , Company = "FPT Company", TimeWorkID = 2, Salary = 50000,  Description = "introduction", Request = "introduction" }
                 );
             modelBuilder.Entity<ApplicationJob>().HasData(
                 new ApplicationJob { Id = 1, Description = "introduction", StatusID = 1, JobID = 1},

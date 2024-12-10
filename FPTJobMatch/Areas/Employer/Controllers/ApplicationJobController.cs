@@ -31,6 +31,7 @@ namespace FPTJobMatch.Area.Employer.Controllers
 
         public IActionResult Index()
         {
+
             List<ApplicationJob> myList = _applicationJobRepository.GetAll("Job").ToList();
             return View(myList);
         }
