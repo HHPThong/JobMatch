@@ -28,7 +28,7 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 
         public IActionResult Create()
         {
-            JobMV jobMV = new JobMV()
+            JobVM jobMV = new JobVM()
             {
                 TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
                 {
@@ -58,33 +58,48 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 
         public IActionResult Edit(int? jobId)
         {
-            if (jobId == null || jobId == 0)
+			JobVM jobVM = new JobVM()
+			{
+				TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+				{
+					Text = t.Type,
+					Value = t.ID.ToString()
+				}),
+				Job = new Job()
+			};
+			if (jobId == null || jobId == 0)
             {
                 return NotFound();
             }
-            Job? job = _jobRepository.Get(j => j.ID == jobId);
-            if (job == null)
+            jobVM.Job = _jobRepository.Get(t => t.ID == jobId);
+            if (jobVM.Job == null)
             {
                 return NotFound();
             }
-            return View(job);
+            return View(jobVM);
         }
 
         [HttpPost]
-        public IActionResult Edit(Job job)
-        {
-            if (job.Name.Equals(job.Description))
-            {
-                ModelState.AddModelError("Description", "Name can not be the same as description");
-            }
+        public IActionResult Edit(Job? job)
+        {       
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
                 _jobRepository.Update(job);
                 _jobRepository.Save();
                 TempData["success"] = "Job updated successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
+                return RedirectToAction("Index");   
+			}
+			JobVM jobMV = new JobVM()
+			{
+				TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+				{
+					Text = t.Type,
+					Value = t.ID.ToString()
+				}),
+				Job = _jobRepository.Get(t => t.ID == job.ID)
+			};
+			return View();
         }
 
         public IActionResult Delete(int? JobID)
@@ -101,7 +116,7 @@ namespace FPTJobMatch.Areas.Employer.Controllers
             return View(job);
         }
         [HttpPost]
-        public IActionResult Delete(Job job)
+        public IActionResult Delete(Job? job)
         {
             _jobRepository.Delete(job);
             _jobRepository.Save();

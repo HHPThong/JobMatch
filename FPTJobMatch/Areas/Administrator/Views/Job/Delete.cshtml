@@ -1,33 +1,34 @@
 ﻿@model Job
-<p>CREATE NEW JOB</p>
+<p>DELETE NEW JOB</p>
 <form method="post" enctype="multipart/form-data">
 	<div class="border p-3 mt-4">
 		<input asp-for="ID" hidden />
 		<div class="mb-3 row">
 			<label asp-for="Name"></label>
-			<input asp-for="Name" />
+			<input asp-for="Name" disabled />
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="TimeWork"></label>
-			<input asp-for="TimeWork" disabled />
+			<input asp-for="TimeWorkID " disabled>
+
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="Company"></label>
-			<input asp-for="Company" />
+			<input asp-for="Company" disabled />
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="Salary"></label>
-			<input asp-for="Salary" />
+			<input asp-for="Salary" disabled />
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="Description"></label>
-			<input asp-for="Description" />
+			<input asp-for="Description" disabled />
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="Request"></label>
-			<input asp-for="Request" />
+			<input asp-for="Request" disabled />
 		</div>
 		<button type="submit" class="btn btn-primary">Create</button>
-		<a asp-controller="Administrator" asp-action="Index" class="btn btn-primary">Back</a>
+		<a asp-controller="Job" asp-action="Index" class="btn btn-primary">Back</a>
 	</div>
 </form>

@@ -1,6 +1,6 @@
 ﻿@model List<Job>
 <partial name="_Notification" />
-<p> Lisu Of Jobs</p>
+<p> List Of Jobs</p>
 <a asp-controller="Job" asp-action="Create" class="btn btn-primary"> Add new Job</a>
 <table class="table table-bordered">
 	<thead>
@@ -35,7 +35,12 @@
 				<td>@jobs.Salary</td>
 				<td>@jobs.Description</td>
 				<td>@jobs.Request</td>
+				<td>
+					<a asp-controller="Job" asp-action="Edit" asp-route-JobID="@jobs.ID" class="btn btn-primary">Edit</a>
+					<a asp-controller="Job" asp-action="Delete" asp-route-JobID="@jobs.ID" class="btn btn-danger">Delete</a>
+				</td>
 			</tr>
+
 		}
 	</tbody>
 </table>

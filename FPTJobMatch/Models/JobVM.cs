@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FPTJobMatch.Models
 {
-	public class JobMV
+	public class JobVM
 	{
 		public Job Job { get; set; }
 		[ValidateNever]

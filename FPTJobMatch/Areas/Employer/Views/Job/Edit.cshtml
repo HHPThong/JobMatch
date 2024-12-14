@@ -1,4 +1,4 @@
-﻿@model JobMV
+﻿@model JobVM
 <p>UPDATE NEW JOB</p>
 <form method="post" enctype="multipart/form-data">
 	<div class="border p-3 mt-4">
@@ -9,7 +9,7 @@
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="Job.TimeWork"></label>
-			<select asp-for="Job.TimeWork" asp-items="@Model.TimeWork"></select>
+			<select asp-for="Job.TimeWorkID" asp-items="@Model.TimeWork"></select>
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="Job.Company"></label>
@@ -28,6 +28,6 @@
 			<input asp-for="Job.Request" />
 		</div>
 		<button type="submit" class="btn btn-primary">Create</button>
-		<a asp-controller="Administrator" asp-action="Index" class="btn btn-primary">Back</a>
+		<a asp-controller="Job" asp-action="Index" class="btn btn-primary">Back</a>
 	</div>
 </form>
