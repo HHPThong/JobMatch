@@ -10,7 +10,7 @@ namespace FPTJobMatch.Area.Employer.Controllers
 {
     [Area("Employer")]
     [Authorize(Roles = "Employer")]
-    public class ApplicationJobController : Controller
+    public class CategoryController : Controller
 	{
 		private readonly ITimeWorkRepository _workRepository;
 		private readonly IWebHostEnvironment _webHostEnvironment;
@@ -18,7 +18,7 @@ namespace FPTJobMatch.Area.Employer.Controllers
         private readonly IApplicationJobRepository _applicationJobRepository;
         private readonly IStatusRepository _statusRepository;
         
-        public ApplicationJobController(IWebHostEnvironment webHostEnvironment , IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
+        public CategoryController(IWebHostEnvironment webHostEnvironment , IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
         {
             _jobRepostitory = jobRepostitory;
             _applicationJobRepository = applicationJobRepository;

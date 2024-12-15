@@ -2,7 +2,7 @@
 
 namespace FPTJobMatch.Areas.JobSeeker.Controllers
 {
-	public class JobController : Controller
+	public class ProfileController : Controller
 	{
 		public IActionResult Index()
 		{

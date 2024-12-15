@@ -8,14 +8,25 @@ namespace FPTJobMatch.Models
     {
         [Key]
         public int ID { get; set; }
-        public string Name { get; set; }
-        public int TimeWorkID { get; set; }
-        [ForeignKey(nameof(TimeWorkID))]
-        [ValidateNever]
-        public TimeWork TimeWork { get; set; }
-        public string Company { get; set; }
+		public string Title { get; set; }
+		public string Description { get; set; }
+		public string requiredQualification { get; set; }
+		public DateTime Deadline { get; set; }
+
+		[ValidateNever]
+		public int CategoryId { get; set; }
+		[ForeignKey("CategoryId")]
+
+		[ValidateNever]
+		public Category Category { get; set; }
+
+		[ValidateNever]
+		public string? UserId { get; set; }
+		[ForeignKey(nameof(UserId))]
+
+		[ValidateNever]
+		public ApplicationUser ApplicationUser { get; set; }
         public double Salary { get; set; }
-        public string Description { get; set; }
         public string Request {  get; set; }
         
     }

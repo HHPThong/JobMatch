@@ -16,8 +16,8 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.Sign
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IApplicationJobRepository, ApplicationJobRepository>();
 builder.Services.AddScoped<IJobRepository, JobRepository>();
-builder.Services.AddScoped<IStatusRepository, StatusRepository>();
-builder.Services.AddScoped<ITimeWorkRepository, TimeWordRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSendercs>();
 
 builder.Services.ConfigureApplicationCookie(option =>

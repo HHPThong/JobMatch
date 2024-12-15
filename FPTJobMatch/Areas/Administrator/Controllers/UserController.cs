@@ -11,13 +11,13 @@ namespace FPTJobMatch.Area.Administrator.Controllers
     [Area("Aministrator")]
 	[Authorize(Roles = "Administrator")]
 
-	public class JobController : Controller
+	public class UserController : Controller
 	{
 		private readonly IJobRepository _jobRepository;
 		private readonly ITimeWorkRepository _workRepository;
 		private readonly IWebHostEnvironment _webHostEnvironment;
 
-		public JobController(IJobRepository jobRepository, ITimeWorkRepository workRepository, IWebHostEnvironment webHostEnvironment)
+		public UserController(IJobRepository jobRepository, ITimeWorkRepository workRepository, IWebHostEnvironment webHostEnvironment)
 		{
 			_jobRepository = jobRepository;
 			_workRepository = workRepository;
