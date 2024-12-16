@@ -1,7 +1,11 @@
-﻿  using FPTJobMatch.Models;
+﻿using FPTJobMatch.Models;
 using FPTJobMatch.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
+using System.Security.Claims;
 
 namespace FPTJobMatch.Areas.Employer.Controllers
 {
@@ -9,119 +13,213 @@ namespace FPTJobMatch.Areas.Employer.Controllers
     [Authorize(Roles = "Employer")]
     public class JobController : Controller
     {
-        private readonly IJobRepository _jobRepository;
-        private readonly ITimeWorkRepository _workRepository;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-
-        public JobController(IJobRepository jobRepository, ITimeWorkRepository workRepository, IWebHostEnvironment webHostEnvironment)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<IdentityUser> _userManager;
+        public JobController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
         {
-            _jobRepository = jobRepository;
-            _workRepository = workRepository;
-            _webHostEnvironment = webHostEnvironment;
+            _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
-            List<Job> myList = _jobRepository.GetAll("TimeWork").ToList();
-            return View(myList);
+			var claimIdentity = (ClaimsIdentity)User.Identity;
+			var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId != null)
+            {
+                var myList = _unitOfWork.JobRepository.GetAll("Category")
+                    .Where(j => j.UserId == userId)  // Chỉ lấy các job thuộc về user hiện tại
+                    .ToList();
+                return View(myList);
+            }
+            return View(new List<Job>());
         }
 
         public IActionResult Create()
         {
             JobVM jobMV = new JobVM()
             {
-                TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+                Categories = _unitOfWork.CategoryRepository.GetAll().Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
                 {
-                    Text = t.Type,
-                    Value = t.ID.ToString()
+                    Text = c.Name,
+                    Value = c.Id.ToString()
                 }),
                 Job = new Job()
             };
             return View(jobMV);
         }
         [HttpPost]
-        public IActionResult Create(Job job)
+        public IActionResult Create(JobVM jobVM)
         {
-            if (job.Name.Equals(job.Description))
-            {
-                ModelState.AddModelError("Description", "Name can not be the same as description");
-            }
             if (ModelState.IsValid)
             {
-                _jobRepository.Add(job);
-                _jobRepository.Save();
-                TempData["success"] = "Job Created successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
+				var claimIdentity = (ClaimsIdentity)User.Identity;
+				var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+				if (userId != null)
+				{
+					jobVM.Job.UserId = userId;
+					_unitOfWork.JobRepository.Add(jobVM.Job);
+					_unitOfWork.JobRepository.Save();
+					TempData["success"] = "Job created successfully";
+					return RedirectToAction("Index");
+				}
+			}
+			return View(jobVM);
+		}
 
-        public IActionResult Edit(int? jobId)
+        public IActionResult Edit(int? id)
         {
 			JobVM jobVM = new JobVM()
 			{
-				TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+				Categories = _unitOfWork.CategoryRepository.GetAll().Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
 				{
-					Text = t.Type,
-					Value = t.ID.ToString()
+					Text = c.Name,
+					Value = c.Id.ToString(),
 				}),
-				Job = new Job()
+				Job = _unitOfWork.JobRepository.Get(c => c.ID == id)
 			};
-			if (jobId == null || jobId == 0)
-            {
-                return NotFound();
-            }
-            jobVM.Job = _jobRepository.Get(t => t.ID == jobId);
-            if (jobVM.Job == null)
-            {
-                return NotFound();
-            }
-            return View(jobVM);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Job? job)
-        {       
-            if (ModelState.IsValid)
-            {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                _jobRepository.Update(job);
-                _jobRepository.Save();
-                TempData["success"] = "Job updated successfully";
-                return RedirectToAction("Index");   
-			}
-			JobVM jobMV = new JobVM()
+			jobVM.Categories = _unitOfWork.CategoryRepository.GetAll().Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
 			{
-				TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-				{
-					Text = t.Type,
-					Value = t.ID.ToString()
-				}),
-				Job = _jobRepository.Get(t => t.ID == job.ID)
-			};
-			return View();
-        }
+				Text = c.Name,
+				Value = c.Id.ToString(),
+			});
+			return View(jobVM);
+		}
 
-        public IActionResult Delete(int? JobID)
-        {
-            if (JobID == null || JobID == 0)
-            {
-                return NotFound();
-            }
-            Job? job = _jobRepository.Get(j => j.ID == JobID);
-            if (job == null)
-            {
-                return NotFound();
-            }
-            return View(job);
-        }
         [HttpPost]
-        public IActionResult Delete(Job? job)
+        public IActionResult Edit(JobVM jobVM)
         {
-            _jobRepository.Delete(job);
-            _jobRepository.Save();
-            TempData["success"] = "Job Deleted successfully";
-            return RedirectToAction("Index");
-        }
-    }
+			var claimIdentity = (ClaimsIdentity)User.Identity;
+			var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+			if (userId != null)
+			{
+				if (ModelState.IsValid)
+				{
+					jobVM.Job.UserId = userId;
+					_unitOfWork.JobRepository.Update(jobVM.Job);
+					_unitOfWork.JobRepository.Save();
+					TempData["success"] = "Job edited successfully";
+					return RedirectToAction("Index");
+				}
+			}
+            return View(jobVM);
+		}
+
+        public IActionResult Delete(int? id)
+        {
+			if (id == null || id == 0)
+			{
+				return NotFound();
+			}
+			Job? job = _unitOfWork.JobRepository.Get(c => c.ID == id, "Category");
+			if (job == null)
+			{
+				return NotFound();
+			}
+			return View(job);
+		}
+        [HttpPost]
+        public IActionResult Delete(Job job)
+        {
+			_unitOfWork.JobRepository.Delete(job);
+			_unitOfWork.JobRepository.Save();
+			TempData["success"] = "Job deleted successfully";
+			return RedirectToAction("Index");
+		}
+		public IActionResult ViewJobApp(int? id, string sortBy, string filterBy)
+		{
+			if (id == null || id == 0)
+			{
+				return NotFound();
+			}
+
+			Expression<Func<ApplicationJob, bool>> filter = j => j.JobID == id;
+			var jobApps = _unitOfWork.ApplicationJobRepository.GetAllJobApp(filter);
+
+			if (!string.IsNullOrEmpty(sortBy))
+			{
+				switch (sortBy)
+				{
+					case "email":
+						jobApps = jobApps.OrderBy(j => j.Email);
+						break;
+					case "emailDesc":
+						jobApps = jobApps.OrderByDescending(j => j.Email);
+						break;
+					case "dayApply":
+						jobApps = jobApps.OrderBy(j => j.DayApply); // Sắp xếp theo ngày áp dụng giảm dần
+						break;
+					case "dayApplyDesc":
+						jobApps = jobApps.OrderByDescending(j => j.DayApply); // Sắp xếp theo ngày áp dụng giảm dần
+						break;
+				}
+			}
+
+			if (!string.IsNullOrEmpty(filterBy))
+			{
+				jobApps = jobApps.Where(j => j.Email.Contains(filterBy));
+			}
+
+			return View(jobApps);
+		}
+		public async Task<IActionResult> ViewProfile(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var applicationJob = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == id);
+			if (applicationJob == null)
+			{
+				return NotFound();
+			}
+
+			var jobSeeker = await _userManager.FindByEmailAsync(applicationJob.Email);
+			if (jobSeeker == null)
+			{
+				return NotFound();
+			}
+
+			return View(jobSeeker);
+		}
+		public IActionResult Accept(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var jobApp = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == id);
+			if (jobApp == null)
+			{
+				return NotFound();
+			}
+
+			jobApp.Status = true;
+			_unitOfWork.ApplicationJobRepository.Update(jobApp);
+			_unitOfWork.Save(); // Lưu thay đổi vào cơ sở dữ liệu
+
+			return RedirectToAction("Index");
+		}
+		public IActionResult Decline(int? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+
+			var jobApp = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == id);
+			if (jobApp == null)
+			{
+				return NotFound();
+			}
+			_unitOfWork.ApplicationJobRepository.Delete(jobApp);
+			_unitOfWork.Save(); // Lưu thay đổi vào cơ sở dữ liệu
+
+			return RedirectToAction("Index");
+		}
+
+	}
 }

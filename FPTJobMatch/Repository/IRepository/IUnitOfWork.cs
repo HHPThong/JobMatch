@@ -5,7 +5,7 @@
 		ICategoryRepository CategoryRepository { get; }
 		IJobRepository JobRepository { get; }
 		IAppUserRepository AppUserRepository { get; }
-		IApplicationJobRepository JobApplicationRepository { get; }
+		IApplicationJobRepository ApplicationJobRepository { get; }
 		void Save();
 	}
 }

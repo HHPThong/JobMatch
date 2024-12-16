@@ -1,0 +1,28 @@
+﻿@model Category
+
+<p> Add CV </p>
+<div class="header">
+    <h1>Create a category</h1>
+    <a asp-controller="Category" asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+</div>
+
+<hr />
+
+<form method="post" class="w-75">
+    <div class="border p-3 mt-4">
+        <div class="mb-3 d-flex justify-content-around align-items-baseline">
+            <label asp-for="Name" class="fw-bold">Name: </label>
+            <div class="d-grid w-75">
+                <input asp-for="Name" type="text" class="px-2 fst-italic" style="height: 150%">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-primary btn-add">Add Category</button>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}

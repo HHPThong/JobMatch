@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FPTJobMatch.Models
@@ -7,6 +8,9 @@ namespace FPTJobMatch.Models
 	{
 		public Job Job { get; set; }
 		[ValidateNever]
-		public IEnumerable<SelectListItem> TimeWork { get; set; }
+		public IEnumerable<SelectListItem> Categories { get; set; }
+		[ValidateNever]
+		public ApplicationJob apply { get; set; }
+
 	}
 }

@@ -1,0 +1,41 @@
+﻿﻿﻿@using Microsoft.AspNetCore.Identity
+@model FPTJobMatch.Models.ApplicationUser
+@inject UserManager<IdentityUser> UserManager 
+
+@{
+    ViewData["Title"] = "User Profile";
+}
+<h2>View Profile JobSeeker</h2>
+<hr />
+
+<div class="w-75 my-5">
+    <dl class="d-flex">
+        
+        <div class="vertical-line mx-5"></div>
+
+        <div class="row">
+            <dt class="col-sm-4">Name</dt>
+            <dd class="col-sm-8">@Model.Name</dd>
+
+            <dt class="col-sm-4">Introduction</dt>
+            <dd class="col-sm-8">@Model.Introduction</dd>
+
+            <dt class="col-sm-4">Address</dt>
+            <dd class="col-sm-8">@Model.Address</dd>
+
+            <dt class="col-sm-4">City</dt>
+            <dd class="col-sm-8">@Model.City</dd>
+
+            <dd class="col-sm-6 text-center">
+                @if (!string.IsNullOrEmpty(Model.CV))
+                {
+                    <a class="btn btn-outline-danger" href="@Model.CV" target="_blank">Download CV</a>
+                }
+                else
+                {
+                    <span>No CV uploaded</span>
+                }
+            </dd>
+        </div>
+    </dl>
+</div>

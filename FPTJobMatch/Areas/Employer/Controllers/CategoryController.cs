@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net; 
-using FPTJobMatch.Data;
 using FPTJobMatch.Models;
-using FPTJobMatch.Repository;
 using FPTJobMatch.Repository.IRepository;
+using System.Security.Claims;
 
 namespace FPTJobMatch.Area.Employer.Controllers
 {
@@ -12,184 +10,125 @@ namespace FPTJobMatch.Area.Employer.Controllers
     [Authorize(Roles = "Employer")]
     public class CategoryController : Controller
 	{
-		private readonly ITimeWorkRepository _workRepository;
-		private readonly IWebHostEnvironment _webHostEnvironment;
-		private readonly IJobRepository _jobRepostitory;
-        private readonly IApplicationJobRepository _applicationJobRepository;
-        private readonly IStatusRepository _statusRepository;
-        
-        public CategoryController(IWebHostEnvironment webHostEnvironment , IJobRepository jobRepostitory, IApplicationJobRepository applicationJobRepository, IStatusRepository statusRepository, ITimeWorkRepository workRepository)
+		private readonly IUnitOfWork _unitOfWork;       
+		public CategoryController(IUnitOfWork unitOfWork)
         {
-            _jobRepostitory = jobRepostitory;
-            _applicationJobRepository = applicationJobRepository;
-            _statusRepository = statusRepository;
-            _workRepository = workRepository;
-            _webHostEnvironment = webHostEnvironment;
-
+            _unitOfWork=unitOfWork;
         }
-
-
         public IActionResult Index()
         {
+			var claimIdentity = (ClaimsIdentity)User.Identity;
+			var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            List<ApplicationJob> myList = _applicationJobRepository.GetAll("Job").ToList();
-            return View(myList);
-        }
+			if (userId != null)
+			{
+				var myList = _unitOfWork.CategoryRepository.GetAll()
+					.Where(c => c.UserId == userId)  // Chỉ lấy các category thuộc về user hiện tại
+					.ToList();
+				return View(myList);
+			}
+			// Nếu không có userId, hoặc không tìm thấy categories, trả về View trống hoặc với danh sách rỗng
+			return View(new List<Category>());
+		}
+		public async Task<IActionResult> ToggleNotification(int id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			Category? category = _unitOfWork.CategoryRepository.Get(c => c.Id == id);
+			if (category == null)
+			{
+				return NotFound();
+			}
 
-        public IActionResult Create()
-        {
-            ApplicationJobVM applicationJobVM = new ApplicationJobVM()
-            {
-                Job = _jobRepostitory.GetAll().Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                {
-                    Text = j.Name,
-                    Value = j.ID.ToString()
-                }),
-				Status = _jobRepostitory.GetAll().Select(s => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-				{
-					Text = s.Name,
-					Value = s.ID.ToString()
-				}),
-				applicationJob = new ApplicationJob()
-            };
-            return View(applicationJobVM);
+			category.NotificationStatus = !category.NotificationStatus;
+
+			_unitOfWork.Save();
+
+			TempData["Success"] = "Notification status delete successfully!";
+			return RedirectToAction("Index");
+		}
+		public IActionResult Create()
+        {           
+            return View();
         }
 
         [HttpPost]
-        public IActionResult Create(ApplicationJob? applicationJob,IFormFile? file)
+        public IActionResult Create(Category category)
         {
             if (ModelState.IsValid)
             {
-                string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (file != null)
-                {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string  applicationPath = Path.Combine(wwwRootPath, @"img\CV");
-                    using (var fileStream = new FileStream(Path.Combine(applicationPath, fileName), FileMode.Create))
-                    {
-                        file.CopyTo(fileStream);
-                    }
-                    applicationJob.CV = @"\img\CV\" + fileName;
-                }
-                _applicationJobRepository.Add(applicationJob);
-                _applicationJobRepository.Save();
-                TempData["success"] = "CV Created successfully";
-                return RedirectToAction("Index");
-            }
-            ApplicationJobVM applicationJobVM = new ApplicationJobVM()
-            {
-                Job = _jobRepostitory.GetAll().Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                {
-                    Text = j.Name,
-                    Value = j.ID.ToString()
-                }),
+				var claimIdentity = (ClaimsIdentity)User.Identity;
+				var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-				 Status = _jobRepostitory.GetAll().Select(s => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-				 {
-					 Text = s.Name,
-					 Value = s.ID.ToString()
-				 }),
-				applicationJob = new ApplicationJob()
-			};
-
-            return View(applicationJobVM);
-        }
-
-        public IActionResult Edit(int? ApplicationJobID)
-        {
-            ApplicationJobVM applicationJobVM = new ApplicationJobVM()
-            {
-                Job = _jobRepostitory.GetAll().Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                {
-                    Text = j.Name,
-                    Value = j.ID.ToString()
-                }),
-				Status = _jobRepostitory.GetAll().Select(s => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
+				if (userId != null)
 				{
-					Text = s.Name,
-					Value = s.ID.ToString()
-				}),
-				applicationJob = new ApplicationJob()
-            };
-            if (ApplicationJobID == null || ApplicationJobID == 0)
-            {
-                return NotFound();
-            }
-            applicationJobVM.applicationJob = _applicationJobRepository.Get(j => j.Id == ApplicationJobID);
-            if (applicationJobVM.applicationJob == null)
-            {
-                return NotFound();
-            }
-            return View(applicationJobVM);
-        }
+					category.UserId = userId;
+					category.DateCreate = DateTime.Now;
+					_unitOfWork.CategoryRepository.Add(category);
+					_unitOfWork.CategoryRepository.Save();
+					TempData["success"] = "Category created successfully";
+				}
+				return RedirectToAction("Index");
+			}
+			return View();
+		}           
+
+        public IActionResult Edit(int? ID)
+        {
+			if (ID == null || ID == 0)
+			{
+				return NotFound();
+			}
+			Category? category = _unitOfWork.CategoryRepository.Get(c => c.Id == ID);
+			if (category == null)
+			{
+				return NotFound();
+			}
+			return View(category);
+		}
 
         [HttpPost]
-        public IActionResult Edit(ApplicationJob? applicationJob, IFormFile? file)
+        public IActionResult Edit(Category category)
         {
             if (ModelState.IsValid)
             {
-                string wwwRootPart = _webHostEnvironment.WebRootPath;
-                if (file != null)
+				var claimIdentity = (ClaimsIdentity)User.Identity;
+				var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+				if (userId != null)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                    string applicationPath = Path.Combine(wwwRootPart, @"img\CV");
-                    if (!string.IsNullOrEmpty(applicationJob.CV))
-                    {
-                        var oldCVPath = Path.Combine(wwwRootPart,applicationJob.CV.TrimStart('\\'));
-                        if (System.IO.File.Exists(oldCVPath))
-                        {
-                            System.IO.File.Delete(oldCVPath);
-                        }
-                    }
-
-                    using (var fileStream = new FileStream(Path.Combine(applicationPath, fileName), FileMode.Create))
-                    {
-                        file.CopyTo(fileStream);
-                    }
-                    applicationJob.CV = @"\img\CV\" + fileName;
-                }
-                _applicationJobRepository.Update(applicationJob);
-                _applicationJobRepository.Save();
-                TempData["success"] = "CV Updated successfully";
-                return RedirectToAction("Index");
-            }
-            ApplicationJobVM applicationJobVM = new ApplicationJobVM()
-            {
-                Job = _jobRepostitory.GetAll().Select(j => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-                {
-                    Text = j.Name,
-                    Value = j.ID.ToString()
-                }),
-				Status = _jobRepostitory.GetAll().Select(s => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-				{
-					Text = s.Name,
-					Value = s.ID.ToString()
-				}),
-				applicationJob = _applicationJobRepository.Get(j => j.Id == applicationJob.Id)
+					category.UserId = userId;
+					category.DateCreate = DateTime.Now;
+					_unitOfWork.CategoryRepository.Update(category);
+					_unitOfWork.CategoryRepository.Save();
+					TempData["success"] = "Category edited successfully";
+				}               
+				return RedirectToAction("Index");
             };
-            return View(applicationJobVM);  
+            return View();  
         }
 
-        public IActionResult Delete(int? ApplicationJobId)
+        public IActionResult Delete(int? id)
         {
-            if (ApplicationJobId == null || ApplicationJobId == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            ApplicationJob? applicationJob = _applicationJobRepository.Get(j => j.Id == ApplicationJobId);
-            if (applicationJob == null)
+            Category? category = _unitOfWork.CategoryRepository.Get(j => j.Id == id);
+            if (category == null)
             {
                 return NotFound();
             }
-            return View(applicationJob);
+            return View(category);
         }
         [HttpPost]
-        public IActionResult Delete(ApplicationJob? applicationJob)
+        public IActionResult Delete(Category category)
         {
-            _applicationJobRepository.Delete(applicationJob);
-            _applicationJobRepository.Save();
-            TempData["Success"] = "CV Deleted Successfully";
-            return RedirectToAction("Index");
+			_unitOfWork.CategoryRepository.Delete(category);
+			_unitOfWork.CategoryRepository.Save();
+			TempData["success"] = "Category deleted successfully";
+			return RedirectToAction("Index");           
         }
     }
 }
