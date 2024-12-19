@@ -39,8 +39,8 @@ namespace FPTJobMatch.Areas.JobSeeker.Controllers
 				return NotFound();
 			}
 			JobVM JobVm = new JobVM();
-			JobVm.apply = new ApplicationJob();
-			JobVm.apply.JobID = job.ID;
+			JobVm.Create = new ApplicationJob();
+			JobVm.Create.JobID = job.ID;
 			JobVm.Job = job;
 
 			return View(JobVm);
@@ -61,16 +61,16 @@ namespace FPTJobMatch.Areas.JobSeeker.Controllers
 				}
 
 				// Gán email của người dùng hiện tại vào đối tượng JobApplication
-				job.apply.Email = currentUser.Email;
+				job.Create.Email = currentUser.Email;
 
 				// Lấy ngày giờ hiện tại
 				DateTime currentDate = DateTime.Now;
 
 				// Gán ngày giờ hiện tại vào trường DayApply của đối tượng JobApplication
-				job.apply.DayApply = currentDate;
+				job.Create.DayApply = currentDate;
 
 				// Lưu đối tượng JobApplication vào cơ sở dữ liệu
-				_unitOfWork.ApplicationJobRepository.Add(job.apply);
+				_unitOfWork.ApplicationJobRepository.Add(job.Create);
 				_unitOfWork.Save();
 
 				TempData["success"] = "Job applied successfully";

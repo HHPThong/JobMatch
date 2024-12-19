@@ -2,7 +2,7 @@ using FPTJobMatch.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace FPTJobMatch.Area.Administrator.Controllers
+namespace FPTJobMatch.Areas.Administrator.Controllers
 {
     [Area("Administrator")]
     public class HomeController : Controller

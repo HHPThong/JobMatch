@@ -1,9 +1,9 @@
 ﻿﻿﻿@using Microsoft.AspNetCore.Identity
-@model IEnumerable<FPTJobMatch.Models.ApplicationUser>
 @inject UserManager<IdentityUser> UserManager
-
+@model List<ApplicationUser>
 <partial name="_Notification" />
-<h1> List Of Jobs</h1>
+
+<h1> List Of Users</h1>
 <table class="table table-bordered">
     <a asp-area="Identity" asp-page="/Account/CreateAccountE" class="btn btn-outline-success mb-3 btn-new-user">
         <i class="bi bi-person-plus-fill"></i>

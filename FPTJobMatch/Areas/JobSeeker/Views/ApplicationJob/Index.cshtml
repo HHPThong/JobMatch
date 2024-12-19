@@ -8,9 +8,10 @@
 		<tr class="fw-bold">
 			<td>Title</td>
 			<td>Description</td>
-			<td>Required Qualification</td>
+			<td>Salary</td>
 			<td>Deadline</td>
 			<td>Category</td>
+			<td>Required Qualification</td>
 			<td></td>
 		</tr>
 	</thead>
@@ -20,11 +21,13 @@
 			<tr>
 				<td>@Job.Title</td>
 				<td>@Job.Description</td>
-				<td>@Job.requiredQualification</td>
-				<td>@Job.Deadline</td>
+				<td>@Job.Salary</td>
 				<td>@Job.Category.Name</td>
+				<td>@Job.Deadline</td>
+				<td>@Job.requiredQualification</td>
+
 				<td>
-					<a asp-controller="ApplicationJob" asp-action="Create" asp-route-id="@Job.ID" class="btn btn-outline-primary">Apply</a>
+					<a asp-controller="ApplicationJob" asp-action="Create" asp-route-ID="@Job.ID" class="btn btn-outline-primary">Apply</a>
 				</td>
 			</tr>
 		}

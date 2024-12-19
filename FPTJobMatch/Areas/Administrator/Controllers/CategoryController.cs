@@ -6,7 +6,7 @@ using FPTJobMatch.Models;
 using FPTJobMatch.Repository.IRepository;
 using FPTJobMatch.Repository;
 
-namespace FPTJobMatch.Area.Administrator.Controllers
+namespace FPTJobMatch.Areas.Administrator.Controllers
 {
 	[Area("Administrator")]
 	[Authorize(Roles = "Administrator")]

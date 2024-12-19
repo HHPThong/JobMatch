@@ -13,7 +13,7 @@ namespace FPTJobMatch.Repository
 		{
 			_dbContext = dbContext;
 		}
-		public IEnumerable<ApplicationJob> GetAllJobApp(Expression<Func<ApplicationJob, bool>> filter = null)
+		public IEnumerable<ApplicationJob> GetAllAppJob(Expression<Func<ApplicationJob, bool>> filter = null)
 		{
 			IQueryable<ApplicationJob> query = _dbContext.apps;
 

@@ -2,25 +2,25 @@
 using Microsoft.AspNetCore.Mvc;
 using FPTJobMatch.Data;
 using FPTJobMatch.Models;
-using FPTJobMatch.Repository;
 using FPTJobMatch.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 
 
-namespace FPTJobMatch.Area.Administrator.Controllers
+namespace FPTJobMatch.Areas.Administrator.Controllers
 {
-    [Area("Aministrator")]
+    [Area("Administrator")]
 	[Authorize(Roles = "Administrator")]
 
-	public class UserController : Controller
+	public class UsersController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly UserManager<IdentityUser> _userManager;
-		public UserController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
+		public UsersController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
 		{
 			_unitOfWork = unitOfWork;
 			_userManager = userManager;
 		}
+
 		public IActionResult Index()
 		{
 			List<ApplicationUser> myList = _unitOfWork.AppUserRepository.GetAll().ToList();

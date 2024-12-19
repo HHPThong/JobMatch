@@ -6,7 +6,7 @@ namespace FPTJobMatch.Repository.IRepository
 {
     public interface IApplicationJobRepository:IRepository<ApplicationJob>
     {
-		IEnumerable<ApplicationJob> GetAllJobApp(Expression<Func<ApplicationJob, bool>> filter = null);
+		IEnumerable<ApplicationJob> GetAllAppJob(Expression<Func<ApplicationJob, bool>> filter = null);
 		public void Update(ApplicationJob entity);
     }
 }

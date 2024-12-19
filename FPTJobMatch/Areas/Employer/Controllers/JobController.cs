@@ -138,7 +138,7 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 
 			// Lọc dữ liệu
 			Expression<Func<ApplicationJob, bool>> filter = j => j.JobID == id;
-			var jobApps = _unitOfWork.ApplicationJobRepository.GetAllJobApp(filter);
+			var jobApps = _unitOfWork.ApplicationJobRepository.GetAllAppJob(filter);
 
 			// Sắp xếp dữ liệu
 			if (!string.IsNullOrEmpty(sortBy))

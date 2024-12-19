@@ -10,7 +10,7 @@ namespace FPTJobMatch.Models
 		[ValidateNever]
 		public IEnumerable<SelectListItem> Categories { get; set; }
 		[ValidateNever]
-		public ApplicationJob apply { get; set; }
+		public ApplicationJob Create { get; set; }
 
 	}
 }
