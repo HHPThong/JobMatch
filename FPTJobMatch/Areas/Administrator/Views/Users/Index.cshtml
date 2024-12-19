@@ -1,46 +1,68 @@
-﻿@model List<Job>
-<partial name="_Notification" />
-<p> List Of Jobs</p>
-<a asp-controller="Job" asp-action="Create" class="btn btn-primary"> Add new Job</a>
-<table class="table table-bordered">
-	<thead>
-		<tr>
-			<td>
-				Name Job
-			</td>
-			<td>
-				Time Working
-			</td>
-			<td>
-				Company
-			</td>
-			<td>
-				Salary
-			</td>
-			<td>
-				Description
-			</td>
-			<td>
-				Request
-			</td>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var jobs in Model)
-		{
-			<tr>
-				<td>@jobs.Name</td>
-				<td>@jobs.TimeWork.Type</td>
-				<td>@jobs.Company</td>
-				<td>@jobs.Salary</td>
-				<td>@jobs.Description</td>
-				<td>@jobs.Request</td>
-				<td>
-					<a asp-controller="Job" asp-action="Edit" asp-route-JobID="@jobs.ID" class="btn btn-primary">Edit</a>
-					<a asp-controller="Job" asp-action="Delete" asp-route-JobID="@jobs.ID" class="btn btn-danger">Delete</a>
-				</td>
-			</tr>
+﻿﻿﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<FPTJobMatch.Models.ApplicationUser>
+@inject UserManager<IdentityUser> UserManager
 
-		}
-	</tbody>
+<partial name="_Notification" />
+<h1> List Of Jobs</h1>
+<table class="table table-bordered">
+    <a asp-area="Identity" asp-page="/Account/CreateAccountE" class="btn btn-outline-success mb-3 btn-new-user">
+        <i class="bi bi-person-plus-fill"></i>
+    </a>
+    <thead class="thead">
+        <tr>
+            <th>Email</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Status</th>
+            <th>Role</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="tbody">
+        @foreach (var user in Model)
+        {
+            var userRole = await UserManager.GetRolesAsync(user);
+            <tr>
+                <td>@user.Email</td>
+                <td style="font-weight: 600;">@user.Name</td>
+                <td>@user.Address</td>
+                <td>@user.City</td>
+                <td class="td-status">
+                    @(user.Status ? "Active" : "Inactive")
+                    @if (user.Status)
+                    {
+                        <form asp-controller="Users" asp-action="ToggleStatus" method="post">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="active_button">Disable</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-controller="Users" asp-action="ToggleStatus" method="post">
+                            <input type="hidden" name="id" value="@user.Id" />
+                            <button type="submit" class="active_button">Enable</button>
+                        </form>
+                    }
+                </td>
+                <td>
+                    @if (userRole.Contains("Admin"))
+                    {
+                        <p class="text_admin">Admin</p>
+                    }
+                    else if (userRole.Contains("Employer"))
+                    {
+                        <p class="text_employee">Employer</p>
+                    }
+                    else if (userRole.Contains("JobSeeker"))
+                    {
+                        <p class="text_default">Job Seeker</p>
+                    }
+                </td>
+                <td>
+                    <a class="delete_button" asp-controller="Users" asp-action="Delete" asp-route-id=@user.Id>Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>

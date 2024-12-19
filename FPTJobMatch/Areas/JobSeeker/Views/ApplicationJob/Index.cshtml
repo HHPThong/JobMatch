@@ -1,32 +1,31 @@
-﻿@model List<ApplicationJob>
+﻿@model List<Job>
 <partial name="_Notification" />
-<p> List Of Application Jobs</p>
-<a asp-controller="ApplicationJob" asp-action="Create" class="btn btn-primary"> Add new Application Job</a>
+<h1>List of Job</h1>
+
+
 <table class="table table-bordered">
 	<thead>
-		<tr>
-			<td>
-				Job Information
-			</td>
-			<td>
-				Description
-			</td>
-			<td>
-				CV
-			</td>
-			<td>
-				Status
-			</td>
+		<tr class="fw-bold">
+			<td style="width: 15%">Title</td>
+			<td style="width: 25%">Description</td>
+			<td style="width: 20%">Required Qualification</td>
+			<td>Deadline</td>
+			<td>Category</td>
+			<td></td>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var applicationJob in Model)
+		@foreach (var Job in Model)
 		{
 			<tr>
-				<td>@applicationJob.Job.Name</td>
-				<td>@applicationJob.Description</td>
-				<td>@applicationJob.CV</td>
-				<td>@applicationJob.Status.NameStatus</td>
+				<td>@Job.Title</td>
+				<td>@Job.Description</td>
+				<td>@Job.requiredQualification</td>
+				<td>@Job.Deadline</td>
+				<td>@Job.Category.Name</td>
+				<td>
+					<a asp-controller="ViewJob" asp-action="Apply" asp-route-id="@Job.ID" class="btn btn-outline-primary">Apply</a>
+				</td>
 			</tr>
 		}
 	</tbody>

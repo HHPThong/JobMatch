@@ -1,7 +1,8 @@
 ﻿using FPTJobMatch.Data;
 using FPTJobMatch.Repository.IRepository;
+using Microsoft.AspNetCore.Mvc;
 
-namespace FPTJobMatch.Repository.IRepository
+namespace FPTJobMatch.Repository
 {
 	public class UnitOfWork : IUnitOfWork
 	{

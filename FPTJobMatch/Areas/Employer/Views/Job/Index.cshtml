@@ -1,7 +1,10 @@
 ﻿@model List<Job>
 <partial name="_Notification" />
+<div>
 <p> List Of Jobs</p>
 <a asp-controller="Job" asp-action="Create" class="btn btn-primary"> Add new Job</a>
+</div>
+
 <table class="table table-bordered">
 	<thead>
 		<tr>
@@ -9,7 +12,7 @@
 				Name Job
 			</td>
 			<td>
-				Time Working
+				Category
 			</td>
 			<td>
 				Company
@@ -29,12 +32,12 @@
 		@foreach (var jobs in Model)
 		{
 			<tr>
-				<td>@jobs.Name</td>
-				<td>@jobs.TimeWork.Type</td>
-				<td>@jobs.Company</td>
+				<td>@jobs.Title</td>
+				<td>@jobs.Category.Name</td>
 				<td>@jobs.Salary</td>
 				<td>@jobs.Description</td>
-				<td>@jobs.Request</td>
+				<td>@jobs.requiredQualification</td>
+				<td>@jobs.Deadline</td>
 				<td>
 					<a asp-controller="Job" asp-action="Edit" asp-route-JobID="@jobs.ID" class="btn btn-primary">Edit</a>
 					<a asp-controller="Job" asp-action="Delete" asp-route-JobID="@jobs.ID" class="btn btn-danger">Delete</a>

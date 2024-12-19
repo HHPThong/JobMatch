@@ -4,30 +4,30 @@
 	<div class="border p-3 mt-4">
 		<input asp-for="Job.ID" hidden />
 		<div class="mb-3 row">
-			<label asp-for="Job.Name"></label>
-			<input asp-for="Job.Name" />
+			<label asp-for="Job.Title"></label>
+			<input asp-for="Job.Title" />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="Job.TimeWork"></label>
-			<select asp-for="Job.TimeWorkID" asp-items="@Model.TimeWork"></select>
-		</div>
+			<label asp-for="Job.Description"></label>
+			<input asp-for="Job.Description" />
+		</div>		
 		<div class="mb-3 row">
-			<label asp-for="Job.Company"></label>
-			<input asp-for="Job.Company" />
+			<label asp-for="Job.Category"></label>
+			<select asp-for="Job.CategoryId" asp-items="@Model.Categories"></select>
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="Job.Salary"></label>
 			<input asp-for="Job.Salary" />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="Job.Description"></label>
-			<input asp-for="Job.Description" />
+			<label asp-for="Job.Deadline"></label>
+			<input asp-for="Job.Deadline" />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="Job.Request"></label>
-			<input asp-for="Job.Request" />
+			<label asp-for="Job.requiredQualification"></label>
+			<input asp-for="Job.requiredQualification" />
 		</div>
-		<button type="submit" class="btn btn-primary">Create</button>
+		<button type="submit" class="btn btn-primary">Edit</button>
 		<a asp-controller="Job" asp-action="Index" class="btn btn-primary">Back</a>
 	</div>
 </form>

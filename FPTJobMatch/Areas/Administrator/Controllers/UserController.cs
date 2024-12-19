@@ -4,6 +4,7 @@ using FPTJobMatch.Data;
 using FPTJobMatch.Models;
 using FPTJobMatch.Repository;
 using FPTJobMatch.Repository.IRepository;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace FPTJobMatch.Area.Administrator.Controllers
@@ -13,119 +14,71 @@ namespace FPTJobMatch.Area.Administrator.Controllers
 
 	public class UserController : Controller
 	{
-		private readonly IJobRepository _jobRepository;
-		private readonly ITimeWorkRepository _workRepository;
-		private readonly IWebHostEnvironment _webHostEnvironment;
-
-		public UserController(IJobRepository jobRepository, ITimeWorkRepository workRepository, IWebHostEnvironment webHostEnvironment)
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly UserManager<IdentityUser> _userManager;
+		public UserController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager)
 		{
-			_jobRepository = jobRepository;
-			_workRepository = workRepository;
-			_webHostEnvironment = webHostEnvironment;
+			_unitOfWork = unitOfWork;
+			_userManager = userManager;
 		}
-
 		public IActionResult Index()
 		{
-			List<Job> myList = _jobRepository.GetAll("TimeWork").ToList();
+			List<ApplicationUser> myList = _unitOfWork.AppUserRepository.GetAll().ToList();
 			return View(myList);
 		}
-
-		public IActionResult Create()
+		public async Task<IActionResult> ToggleStatus(string id)
 		{
-			JobVM jobMV = new JobVM()
-			{
-				TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-				{
-					Text = t.Type,
-					Value = t.ID.ToString()
-				}),
-				Job = new Job()
-			};
-			return View(jobMV);
-		}
-		[HttpPost]
-		public IActionResult Create(Job job)
-		{
-			if (job.Name.Equals(job.Description))
-			{
-				ModelState.AddModelError("Description", "Name can not be the same as description");
-			}
-			if (ModelState.IsValid)
-			{
-				_jobRepository.Add(job);
-				_jobRepository.Save();
-				TempData["success"] = "Job Created successfully";
-				return RedirectToAction("Index");
-			}
-			return View();
-		}
-
-		public IActionResult Edit(int? jobId)
-		{
-			JobVM jobVM = new JobVM()
-			{
-				TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-				{
-					Text = t.Type,
-					Value = t.ID.ToString()
-				}),
-				Job = new Job()
-			};
-			if (jobId == null || jobId == 0)
+			if (id == null)
 			{
 				return NotFound();
 			}
-			jobVM.Job = _jobRepository.Get(t => t.ID == jobId);
-			if (jobVM.Job == null)
+			ApplicationUser? applicationUser = _unitOfWork.AppUserRepository.Get(c => c.Id == id);
+			if (applicationUser == null)
 			{
 				return NotFound();
 			}
-			return View(jobVM);
-		}
 
-		[HttpPost]
-		public IActionResult Edit(Job? job)
-		{
-			if (ModelState.IsValid)
-			{
-				string wwwRootPath = _webHostEnvironment.WebRootPath;
-				_jobRepository.Update(job);
-				_jobRepository.Save();
-				TempData["success"] = "Job updated successfully";
-				return RedirectToAction("Index");
-			}
-			JobVM jobMV = new JobVM()
-			{
-				TimeWork = _workRepository.GetAll().Select(t => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem
-				{
-					Text = t.Type,
-					Value = t.ID.ToString()
-				}),
-				Job = _jobRepository.Get(t => t.ID == job.ID)
-			};
-			return View();
-		}
+			// Toggle the status
+			applicationUser.Status = !applicationUser.Status;
 
-		public IActionResult Delete(int? JobID)
-		{
-			if (JobID == null || JobID == 0)
-			{
-				return NotFound();
-			}
-			Job? job = _jobRepository.Get(j => j.ID == JobID);
-			if (job == null)
-			{
-				return NotFound();
-			}
-			return View(job);
-		}
-		[HttpPost]
-		public IActionResult Delete(Job? job)
-		{
-			_jobRepository.Delete(job);
-			_jobRepository.Save();
-			TempData["success"] = "Job Deleted successfully";
+			// Save changes
+			_unitOfWork.Save();
+
+			TempData["Success"] = applicationUser.Status ? "Account enabled successfully!" : "Account disabled successfully!";
 			return RedirectToAction("Index");
+		}
+
+
+		public IActionResult Delete(string? id)
+		{
+			if (id == null)
+			{
+				return NotFound();
+			}
+			ApplicationUser? applicationUser = _unitOfWork.AppUserRepository.Get(c => c.Id == id);
+			if (applicationUser == null)
+			{
+				return NotFound();
+			}
+
+			return View(applicationUser);
+		}
+
+		[HttpPost, ActionName("Delete")]  //[HttpPost] or [HttpPost, ActionName("Delete")]
+		[ValidateAntiForgeryToken]
+		public IActionResult DeleteConfirmed(string id)
+		{
+			ApplicationUser applicationUser = _unitOfWork.AppUserRepository.Get(c => c.Id == id);
+
+			if (applicationUser == null)
+			{
+				return NotFound();
+			}
+
+			_unitOfWork.AppUserRepository.Delete(applicationUser);
+			_unitOfWork.Save();
+			TempData["Success"] = "Account deleted successfully!!";
+			return RedirectToAction("index");
 		}
 	}
 }

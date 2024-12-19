@@ -1,22 +1,30 @@
-﻿@model ApplicationJobVM
+﻿@model JobVM
 
-<p> Add CV </p>
-<form method="post" enctype="multipart/form-data">
-	<div class="border p-3 mt-4">
-		<div class="border p-3 mt-4">
-			<label asp-for="applicationJob.Job"></label>
-			<select asp-for="applicationJob.JobID" asp-items="@Model.Job"></select>
-		</div>
-		<div class="mb-3 row">
-			<label asp-for="applicationJob.Description"></label>
-			<input asp-for="applicationJob.Description" />
-			<span asp-validation-for="applicationJob.Description" class="text-danger"></span>
-		</div>
-		<div class="border p-3 mt-4">
-			<label asp-for="applicationJob.CV"></label>
-			<input type="file" name="file" class="form-control" />
-		</div>
-		<button type="submit" class="btn btn-primary">Add</button>
-		<a asp-controller="applicationJob" asp-action="Index" class="btn btn-primary">Back</a>
-	</div>
+<div class="d-flex justify-content-between align-items-center">
+    <h2>Apply to Job</h2>
+    <a asp-controller="ViewJob" asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+</div>
+
+<hr />
+
+<form class="w-75" method="post">
+    <div class="border p-3 mt-4">
+        <div class="mb-3 row">
+            <label asp-for="Job.Title" class="col-lg-3"></label>
+            <input asp-for="Job.Title" class="col-lg-9 form-control w-50" disabled>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Job.Description" class="col-lg-3"></label>
+            <input asp-for="Job.Description" class="col-lg-9 form-control w-50" disabled>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Job.requiredQualification" class="col-lg-3">Required Qualification</label>
+            <input asp-for="Job.requiredQualification" class="col-lg-9 form-control w-50" disabled>
+        </div>
+        <div class="mb-3 row">
+            <label asp-for="Job.Deadline" class="col-lg-3"></label>
+            <input asp-for="Job.Deadline" class="col-lg-9 form-control w-50" disabled>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Apply</button>
+    </div>
 </form>

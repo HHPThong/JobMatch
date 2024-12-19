@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\JobSeeker\Views\ApplictionStatus\" />
     <Folder Include="wwwroot\img\CV\" />
   </ItemGroup>
 

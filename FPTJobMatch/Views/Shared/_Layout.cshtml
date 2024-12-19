@@ -21,9 +21,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">                    
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Privacy" asp-action="Privacy">Privacy</a>
-                        </li>
+                        
                         @if (User.IsInRole("Adminitrator"))
                         {
                             <li class="nav-item">
@@ -51,16 +49,16 @@
                         @if (User.IsInRole("JobSeeker"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="Home" asp-action="Index">[Home]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="ViewJob" asp-action="Index">Job</a>
+                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="ApplicationJob" asp-action="Index">[Job]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="Profile" asp-action="Index">View Profile</a>
+                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="Profile" asp-action="Index">[View Profile]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="ApplicationStatus" asp-action="Index">View Application Status</a>
+                                <a class="nav-link text-dark" asp-area="JobSeeker" asp-controller="ApplicationStatus" asp-action="Index">[View Application Status]</a>
                             </li>
                         }
                         

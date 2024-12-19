@@ -10,7 +10,7 @@ namespace FPTJobMatch.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Job> jobs { get; set; }
         public DbSet<ApplicationJob> apps { get; set; }
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public ApplicationDBContext(DbContextOptions options) : base(options) { }
         
     }

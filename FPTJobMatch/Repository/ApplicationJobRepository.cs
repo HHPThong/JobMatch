@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 namespace FPTJobMatch.Repository
 {
     public class ApplicationJobRepository : Repository<ApplicationJob>, IApplicationJobRepository
-    {
+	{
 		private readonly ApplicationDBContext _dbContext;
 		public ApplicationJobRepository(ApplicationDBContext dbContext) : base(dbContext)
 		{
@@ -25,9 +25,9 @@ namespace FPTJobMatch.Repository
 			return query.ToList();
 		}
 
-		public void Update(JobApplication entity)
+		public void Update(ApplicationJob entity)
 		{
-			_dbContext.JobApplications.Update(entity);
+			_dbContext.apps.Update(entity);
 		}
 	}
 }

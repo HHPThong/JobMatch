@@ -4,31 +4,30 @@
 	<div class="border p-3 mt-4">
 		<input asp-for="ID" hidden />
 		<div class="mb-3 row">
-			<label asp-for="Name"></label>
-			<input asp-for="Name" disabled />
+			<label asp-for="Title"></label>
+			<input asp-for="Title" />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="TimeWork"></label>
-			<input asp-for="TimeWorkID " disabled>
-
-		</div>
+			<label asp-for="Description"></label>
+			<input asp-for="Description" disabled />
+		</div>		
 		<div class="mb-3 row">
-			<label asp-for="Company"></label>
-			<input asp-for="Company" disabled />
+			<label asp-for="Category"></label>
+			<select asp-for="Category.Name" disabled></select>
 		</div>
 		<div class="mb-3 row">
 			<label asp-for="Salary"></label>
 			<input asp-for="Salary" disabled />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="Description"></label>
-			<input asp-for="Description" disabled />
+			<label asp-for="Deadline"></label>
+			<input asp-for="Deadline" disabled />
 		</div>
 		<div class="mb-3 row">
-			<label asp-for="Request"></label>
-			<input asp-for="Request" disabled />
+			<label asp-for="requiredQualification"></label>
+			<input asp-for="requiredQualification" disabled />
 		</div>
-		<button type="submit" class="btn btn-primary">Create</button>
+		<button type="submit" class="btn btn-primary">Delete</button>
 		<a asp-controller="Job" asp-action="Index" class="btn btn-primary">Back</a>
 	</div>
 </form>

@@ -23,11 +23,10 @@ namespace FPTJobMatch.Area.Employer.Controllers
 			if (userId != null)
 			{
 				var myList = _unitOfWork.CategoryRepository.GetAll()
-					.Where(c => c.UserId == userId)  // Chỉ lấy các category thuộc về user hiện tại
+					.Where(c => c.UserId == userId)  
 					.ToList();
 				return View(myList);
 			}
-			// Nếu không có userId, hoặc không tìm thấy categories, trả về View trống hoặc với danh sách rỗng
 			return View(new List<Category>());
 		}
 		public async Task<IActionResult> ToggleNotification(int id)
