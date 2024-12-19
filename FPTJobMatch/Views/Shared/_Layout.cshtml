@@ -22,16 +22,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">                    
                         
-                        @if (User.IsInRole("Adminitrator"))
+                        @if (User.IsInRole("Administrator"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Adminitrastor" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link text-dark" asp-area="Administrator" asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Adminitrastor" asp-controller="Users" asp-action="Index">Account Management</a>
+                                <a class="nav-link text-dark" asp-area="Administrator" asp-controller="Users" asp-action="Index">Account Management</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="Adminitrastor" asp-controller="Category" asp-action="Index">Category</a>
+                                <a class="nav-link text-dark" asp-area="Administrator" asp-controller="Category" asp-action="Index">Category</a>
                             </li>
                         }
                         @if (User.IsInRole("Employer"))
