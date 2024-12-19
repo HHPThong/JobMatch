@@ -1,4 +1,5 @@
 ﻿using FPTJobMatch.Models;
+using FPTJobMatch.Repository;
 using FPTJobMatch.Repository.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -35,26 +36,27 @@ namespace FPTJobMatch.Areas.Employer.Controllers
             return View(new List<Job>());
         }
 
-        public IActionResult Create()
-        {
-            JobVM jobMV = new JobVM()
-            {
-                Categories = _unitOfWork.CategoryRepository.GetAll().Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString()
-                }),
-                Job = new Job()
-            };
-            return View(jobMV);
-        }
-        [HttpPost]
-        public IActionResult Create(JobVM jobVM)
-        {
-            if (ModelState.IsValid)
-            {
+		public IActionResult Create()
+		{
+			JobVM jobVM = new JobVM()
+			{
+				Categories = _unitOfWork.CategoryRepository.GetAll().Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
+				{
+					Text = c.Name,
+					Value = c.Id.ToString(),
+				}),
+				Job = new Job()
+			};
+			return View(jobVM);
+		}
+		[HttpPost]
+		public IActionResult Create(JobVM jobVM)
+		{
+			if (ModelState.IsValid)
+			{
 				var claimIdentity = (ClaimsIdentity)User.Identity;
 				var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
 				if (userId != null)
 				{
 					jobVM.Job.UserId = userId;
@@ -67,8 +69,8 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 			return View(jobVM);
 		}
 
-        public IActionResult Edit(int? id)
-        {
+		public IActionResult Edit(int? id)
+		{
 			JobVM jobVM = new JobVM()
 			{
 				Categories = _unitOfWork.CategoryRepository.GetAll().Select(c => new Microsoft.AspNetCore.Mvc.Rendering.SelectListItem()
@@ -86,9 +88,9 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 			return View(jobVM);
 		}
 
-        [HttpPost]
-        public IActionResult Edit(JobVM jobVM)
-        {
+		[HttpPost]
+		public IActionResult Edit(JobVM jobVM)
+		{
 			var claimIdentity = (ClaimsIdentity)User.Identity;
 			var userId = claimIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
@@ -103,11 +105,11 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 					return RedirectToAction("Index");
 				}
 			}
-            return View(jobVM);
+			return View(jobVM);
 		}
 
-        public IActionResult Delete(int? id)
-        {
+		public IActionResult Delete(int? id)
+		{
 			if (id == null || id == 0)
 			{
 				return NotFound();
@@ -119,9 +121,9 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 			}
 			return View(job);
 		}
-        [HttpPost]
-        public IActionResult Delete(Job job)
-        {
+		[HttpPost]
+		public IActionResult Delete(Job job)
+		{
 			_unitOfWork.JobRepository.Delete(job);
 			_unitOfWork.JobRepository.Save();
 			TempData["success"] = "Job deleted successfully";
@@ -134,9 +136,11 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 				return NotFound();
 			}
 
+			// Lọc dữ liệu
 			Expression<Func<ApplicationJob, bool>> filter = j => j.JobID == id;
 			var jobApps = _unitOfWork.ApplicationJobRepository.GetAllJobApp(filter);
 
+			// Sắp xếp dữ liệu
 			if (!string.IsNullOrEmpty(sortBy))
 			{
 				switch (sortBy)
@@ -156,8 +160,10 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 				}
 			}
 
+			// Search Email
 			if (!string.IsNullOrEmpty(filterBy))
 			{
+				// Lọc theo Email
 				jobApps = jobApps.Where(j => j.Email.Contains(filterBy));
 			}
 
@@ -184,6 +190,7 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 
 			return View(jobSeeker);
 		}
+
 		public IActionResult Accept(int? id)
 		{
 			if (id == null)
@@ -220,6 +227,5 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 
 			return RedirectToAction("Index");
 		}
-
 	}
 }

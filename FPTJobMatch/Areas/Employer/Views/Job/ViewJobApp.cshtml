@@ -34,15 +34,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var jobApplication in Model.Where(j => !j.Status))
+        @foreach (var applicationJob in Model.Where(j => !j.Status))
         {
             <tr>
-                <td>@jobApplication.Email</td>
-                <td>@jobApplication.DayApply.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@applicationJob.Email</td>
+                <td>@applicationJob.DayApply.ToString("dd/MM/yyyy HH:mm")</td>
                 <td>
-                    <a asp-action="ViewProfile" asp-route-id="@jobApplication.Id" class="btn btn-outline-primary">View Profile</a>
-                    <a asp-action="Accept" asp-route-id="@jobApplication.Id" class="btn btn-outline-success">Acccept</a>
-                    <a asp-action="Decline" asp-route-id="@jobApplication.Id" class="btn btn-outline-danger">Decline</a>
+                    <a asp-action="ViewProfile" asp-route-id="@applicationJob.Id" class="btn btn-outline-primary">View Profile</a>
+                    <a asp-action="Accept" asp-route-id="@applicationJob.Id" class="btn btn-outline-success">Acccept</a>
+                    <a asp-action="Decline" asp-route-id="@applicationJob.Id" class="btn btn-outline-danger">Decline</a>
                 </td>
             </tr>
         }

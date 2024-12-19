@@ -15,9 +15,6 @@
 				Category
 			</td>
 			<td>
-				Company
-			</td>
-			<td>
 				Salary
 			</td>
 			<td>
@@ -25,6 +22,9 @@
 			</td>
 			<td>
 				Request
+			</td>
+			<td>
+				Deadline
 			</td>
 		</tr>
 	</thead>
@@ -41,6 +41,7 @@
 				<td>
 					<a asp-controller="Job" asp-action="Edit" asp-route-JobID="@jobs.ID" class="btn btn-primary">Edit</a>
 					<a asp-controller="Job" asp-action="Delete" asp-route-JobID="@jobs.ID" class="btn btn-danger">Delete</a>
+					<a asp-controller="Job" asp-action="ViewJobApp" asp-route-JobID="@jobs.ID" class="btn btn-outline-success">View Job Application</a>
 				</td>
 			</tr>
 		

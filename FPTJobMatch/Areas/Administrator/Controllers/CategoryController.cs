@@ -17,8 +17,6 @@ namespace FPTJobMatch.Area.Administrator.Controllers
 		{
 			_unitOfWork = UnitOfWork;
 		}
-
-
 		public IActionResult Index()
 		{
 			List<Category> myList = _unitOfWork.CategoryRepository.GetAll("ApplicationUser").ToList();

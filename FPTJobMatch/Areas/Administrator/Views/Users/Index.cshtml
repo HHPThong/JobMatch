@@ -25,7 +25,7 @@
             var userRole = await UserManager.GetRolesAsync(user);
             <tr>
                 <td>@user.Email</td>
-                <td style="font-weight: 600;">@user.Name</td>
+                <td>@user.Name</td>
                 <td>@user.Address</td>
                 <td>@user.City</td>
                 <td class="td-status">
@@ -46,9 +46,9 @@
                     }
                 </td>
                 <td>
-                    @if (userRole.Contains("Admin"))
+                    @if (userRole.Contains("Administrator"))
                     {
-                        <p class="text_admin">Admin</p>
+                        <p class="text_admin">Administrator</p>
                     }
                     else if (userRole.Contains("Employer"))
                     {

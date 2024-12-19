@@ -26,8 +26,6 @@ namespace FPTJobMatch.Models
 
 		[ValidateNever]
 		public ApplicationUser ApplicationUser { get; set; }
-        public double Salary { get; set; }
-        public string Request {  get; set; }
-        
+        public double Salary { get; set; }        
     }
 }

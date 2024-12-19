@@ -1,33 +1,57 @@
 ﻿@model JobVM
-<p>UPDATE NEW JOB</p>
-<form method="post" enctype="multipart/form-data">
-	<div class="border p-3 mt-4">
-		<input asp-for="Job.ID" hidden />
-		<div class="mb-3 row">
-			<label asp-for="Job.Title"></label>
-			<input asp-for="Job.Title" />
-		</div>
-		<div class="mb-3 row">
-			<label asp-for="Job.Description"></label>
-			<input asp-for="Job.Description" />
-		</div>		
-		<div class="mb-3 row">
-			<label asp-for="Job.Category"></label>
-			<select asp-for="Job.CategoryId" asp-items="@Model.Categories"></select>
-		</div>
-		<div class="mb-3 row">
-			<label asp-for="Job.Salary"></label>
-			<input asp-for="Job.Salary" />
-		</div>
-		<div class="mb-3 row">
-			<label asp-for="Job.Deadline"></label>
-			<input asp-for="Job.Deadline" />
-		</div>
-		<div class="mb-3 row">
-			<label asp-for="Job.requiredQualification"></label>
-			<input asp-for="Job.requiredQualification" />
-		</div>
-		<button type="submit" class="btn btn-primary">Edit</button>
-		<a asp-controller="Job" asp-action="Index" class="btn btn-primary">Back</a>
-	</div>
+<div class="header">
+    <h2>Edit a job</h2>
+    <a asp-controller="Job" asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+</div>
+
+<hr />
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <input hidden asp-for="Job.ID" />
+        <div class="mb-2 input-field">
+            <label asp-for="Job.Title"></label>
+            <div class="d-grid w-75">
+                <input asp-for="Job.Title" class="form-control px-2">
+                <span asp-validation-for="Job.Title" class="text-danger mt-4"></span>
+            </div>
+        </div>
+        <div class="mb-4 input-field">
+            <label asp-for="Job.Category"></label>
+            <div class="d-grid w-75">
+                <select asp-for="Job.CategoryId" asp-items="@Model.Categories" class="form-select px-2"></select>
+            </div>
+        </div>
+        <div class="mb-2 input-field">
+            <label asp-for="Job.Salary"></label>
+            <div class="d-grid w-75">
+                <textarea asp-for="Job.Salary" class="form-control px-2" rows="4"></textarea>
+                <span asp-validation-for="Job.Salary" class="text-danger mt-2"></span>
+            </div>
+        </div>
+        <div class="mb-2 input-field">
+            <label asp-for="Job.Description"></label>
+            <div class="d-grid w-75">
+                <textarea asp-for="Job.Description" class="form-control px-2" rows="4"></textarea>
+                <span asp-validation-for="Job.Description" class="text-danger mt-2"></span>
+            </div>
+        </div>
+
+        <div class="mb-2 input-field">
+            <label asp-for="Job.requiredQualification">Required Qualification</label>
+            <div class="d-grid w-75">
+                <input asp-for="Job.requiredQualification" class="form-control px-2">
+                <span asp-validation-for="Job.requiredQualification" class="text-danger mt-4"></span>
+            </div>
+        </div>
+        <div class="mb-4 input-field">
+            <label asp-for="Job.Deadline"></label>
+            <div class="d-grid w-75">
+                <input asp-for="Job.Deadline" class="form-control px-2">
+                <span asp-validation-for="Job.Deadline" class="text-danger"></span>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-outline-primary btn-edit-job">Edit</button>
+    </div>
 </form>

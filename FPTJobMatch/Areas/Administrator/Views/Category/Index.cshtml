@@ -1,98 +1,47 @@
 ﻿@model List<Category>
 <partial name="_Notification" />
-<p> List Of Category</p>
+<h1>List of Categories waiting for approval</h1>
+
 <table class="table table-bordered">
-    <div class="d-flex justify-content-between align-items-baseline">
-        <a asp-controller="Category" asp-action="Create" class="btn btn-outline-success btn-new-category mb-3">
-            <i class="bi bi-bookmark-plus"></i>
-        </a>
-        <div class="dropdown">
-            @if (Model.Count(c => !c.Availability) == 0)
-            {
-                <div>No categories waiting!!</div>
-            }
-            else
-            {
-                <button class="btn btn-outline-secondary dropdown-toggle btn-waiting" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Category is awaiting review <span class="waiting-number text-white">@Model.Count(c => !c.Availability)</span>
-                </button>
-                <div class="dropdown-menu dropdown-menu-end">
-                    @foreach (var categoryWaiting in Model.Where(c => !c.Availability))  // Ava là false
-                    {
-                        @if (!categoryWaiting.NotificationStatus)  // Notifi là false
-                        {
-                            <div class="waiting-status">
-                                <div class="waiting-content">
-                                    Category <strong class="text-primary">@categoryWaiting.Name</strong> is awaiting confirmation.
-                                    <input type="hidden" name="id" value="@categoryWaiting.Id" />
-                                </div>
-                            </div>
-                        }
-                    }
-                </div>
-            }
-        </div>
-    </div>
+    @* <a asp-controller="Users" asp-action="Create" class="btn btn-success"><i class="bi bi-plus-lg"></i> Create New Account</a> *@
     <thead>
         <tr>
-            <th>Name</th>
+            <th>Name Category</th>
             <th>Date Create</th>
+            <th>Availability</th>
+            <th>User Create</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var category in Model.Where(c => c.Availability))
-        // Phương thức Where sử dụng để lọc ra các obj Category trong Model có thuộc tính Availability là true
+        @foreach (var category in Model.Where(c => !c.Availability))
+        // Phương thức Where sử dụng để lọc ra các obj Category trong Model có thuộc tính Availability là false
         {
             <tr>
                 <td style="font-weight: 600;">@category.Name</td>
                 <td>@category.DateCreate</td>
+                <td class="td-availability">
+                    @(category.Availability ? "Approve" : "Refuse")
+                    @if (category.Availability)
+                    {
+                        <form asp-controller="Category" asp-action="ToggleAvailability" method="post">
+                            <input type="hidden" name="id" value="@category.Id" />
+                            <button type="submit" class="btn btn-outline-warning">Refuse</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-controller="Category" asp-action="ToggleAvailability" method="post">
+                            <input type="hidden" name="id" value="@category.Id" />
+                            <button type="submit" class="btn btn-outline-primary">Approve</button>
+                        </form>
+                    }
+                </td>
+                <td style="font-weight: 700;">@category.ApplicationUser.Name</td>
                 <td>
-                    <a asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="btn btn-outline-primary">Edit</a>
-                    <a asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id" class="btn btn-outline-danger">Delete</a>
+                    <a class="btn btn-outline-danger" asp-controller="Category" asp-action="Delete" asp-route-id=@category.Id>Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-4" id="exampleModalLabel">Notification</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                @if (Model.Count(c => c.Availability && !c.NotificationStatus) == 0)
-                {
-                    <div class="notification-status">
-                        <p class="text-danger fw-bold">Not Notification about Category!!</p>
-                    </div>
-                }
-                else
-                {
-                    @foreach (var category in Model.Where(c => c.Availability))  // Ava là true
-                    {
-                        @if (!category.NotificationStatus)  // Notifi là false
-                        {
-                            <div class="notification-status">
-                                <form asp-controller="Category" asp-action="ToggleNotification" method="post" class="form-notification">
-                                    <div class="notification-content">
-                                        Category <strong>@category.Name</strong> has been confirmed.
-                                        <input type="hidden" name="id" value="@category.Id" />
-                                    </div>
-                                    <button type="submit" class="btn-close"></button>
-                                </form>
-                            </div>
-                        }
-                    }
-                }
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
