@@ -27,7 +27,7 @@
 				<td>@Job.requiredQualification</td>
 
 				<td>
-					<a asp-controller="ApplicationJob" asp-action="Create" asp-route-ID="@Job.ID" class="btn btn-outline-primary">Apply</a>
+					<a asp-controller="ViewJob" asp-action="Apply" asp-route-ID="@Job.ID" class="btn btn-outline-primary">Apply</a>
 				</td>
 			</tr>
 		}

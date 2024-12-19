@@ -129,15 +129,15 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 			TempData["success"] = "Job deleted successfully";
 			return RedirectToAction("Index");
 		}
-		public IActionResult ViewJobApp(int? id, string sortBy, string filterBy)
+		public IActionResult ViewJob(int? ID, string sortBy, string filterBy)
 		{
-			if (id == null || id == 0)
+			if (ID == null || ID == 0)
 			{
 				return NotFound();
 			}
 
 			// Lọc dữ liệu
-			Expression<Func<ApplicationJob, bool>> filter = j => j.JobID == id;
+			Expression<Func<ApplicationJob, bool>> filter = j => j.JobID == ID;
 			var jobApps = _unitOfWork.ApplicationJobRepository.GetAllAppJob(filter);
 
 			// Sắp xếp dữ liệu
@@ -169,14 +169,14 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 
 			return View(jobApps);
 		}
-		public async Task<IActionResult> ViewProfile(int? id)
+		public async Task<IActionResult> ViewProfile(int? ID)
 		{
-			if (id == null)
+			if (ID == null)
 			{
 				return NotFound();
 			}
 
-			var applicationJob = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == id);
+			var applicationJob = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == ID);
 			if (applicationJob == null)
 			{
 				return NotFound();
@@ -191,14 +191,14 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 			return View(jobSeeker);
 		}
 
-		public IActionResult Accept(int? id)
+		public IActionResult Accept(int? ID)
 		{
-			if (id == null)
+			if (ID == null)
 			{
 				return NotFound();
 			}
 
-			var jobApp = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == id);
+			var jobApp = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == ID);
 			if (jobApp == null)
 			{
 				return NotFound();
@@ -210,14 +210,14 @@ namespace FPTJobMatch.Areas.Employer.Controllers
 
 			return RedirectToAction("Index");
 		}
-		public IActionResult Decline(int? id)
+		public IActionResult Decline(int? ID)
 		{
-			if (id == null)
+			if (ID == null)
 			{
 				return NotFound();
 			}
 
-			var jobApp = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == id);
+			var jobApp = _unitOfWork.ApplicationJobRepository.Get(c => c.Id == ID);
 			if (jobApp == null)
 			{
 				return NotFound();
